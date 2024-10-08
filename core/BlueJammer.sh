@@ -40,7 +40,7 @@ echo ""
 
 echo -e "\033[0;36m[*] - SCANNING FOR BLUETOOTH DEVICES - [*]$nc"
 echo -e ""
-echo -e "\033[1;33m[+] Scanning, Please wait..."
+echo -e "\033[1;33m[+] Scanning [\033[0;35mClose the Windows to Stop$nc]..."
 xterm -hold -e 'while [ 1 ]; do hcitool scan ;done' &
 scanner_pid=$!
 
